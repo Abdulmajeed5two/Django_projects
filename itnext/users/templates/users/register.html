@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Register</title>
+        <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
+        <style>
+            .re{
+                margin-top:5px;
+                text-align:center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper" style="background-image: url('{% static 'login/images/msi.jpg' %}');">
+            <div class="inner">
+                <div class="image-holder">
+                    <img style="align-items:center" src="{% static 'login/images/msi.jpg' %}" alt="">
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <h3>Register Form</h3>
+                    <div class="form-wrapper">
+                        <input type="text" name="username" placeholder="Enter Your Username" class="form-control" required>
+                        <i class="zmdi zmdi-account"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input type="email" name="email" placeholder="Enter Your Email" class="form-control" required>
+                        <i class="zmdi zmdi-email"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input type="password" name="password" placeholder="Enter your Password" class="form-control" required>
+                        <i class="zmdi zmdi-lock"></i>
+                    </div>
+                    <button type="submit">Register
+                        <i class="zmdi zmdi-arrow-right"></i>
+                    </button>
+                    
+                    <div class="re">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

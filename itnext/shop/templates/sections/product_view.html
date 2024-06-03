@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+</head>
+<body>
+    {% include "header/header.html" %}
+    <!-- inner page banner -->
+    <div id="inner_banner" class="section inner_banner_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="full">
+                        <div class="title-holder">
+                            <div class="title-holder-cell text-left">
+                                <h1 class="page-title">Shop Detail</h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li class="active">Shop Detail</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end inner page banner -->
+    
+    <!-- Product Detail Section -->
+    <div class="section padding_layout_1 product_detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-12 col-md-12">
+                            <div class="product_detail_feature_img hizoom hi2">
+                                <div class='hizoom hi2'> 
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-responsive" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-12 col-md-12 product_detail_side detail_style1">
+                            <div class="product-heading">
+                                <h2>{{ product.name }}</h2>
+                            </div>
+                            <div class="product-detail-side">
+                                <span><del>${{ product.old_price }}</del></span>
+                                <span class="new-price">${{ product.new_price }}</span>
+                                <span class="rating">
+                                    {% for i in range %}
+                                        <i class="fa {% if i <= product.rating %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                                    {% endfor %}
+                                </span>
+                                <span class="review">({{ product.reviews.count }} customer review)</span>
+                            </div>
+                            <div class="detail-contant">
+                                <p>{{ product.short_description }}</p>
+                                <form class="cart" method="post" action="{% url 'add_to_cart' product.id %}">
+                                    {% csrf_token %}
+                                    <div class="quantity">
+                                        <input step="1" min="1" max="{{ product.stock }}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" type="number">
+                                    </div>
+                                    <button type="submit" class="btn sqaure_bt">Add to cart</button>
+                                </form>
+                            </div>
+                            <div class="share-post">
+                                <a href="#" class="share-text">Share</a>
+                                <ul class="social_icons">
+                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="full">
+                                <div class="tab_bar_section">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#description">Description</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#reviews">Reviews ({{ product.reviews.count }})</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div id="description" class="tab-pane active">
+                                            <div class="product_desc">
+                                                <p>{{ product.full_description }}</p>
+                                            </div>
+                                        </div>
+                                        <div id="reviews" class="tab-pane fade">
+                                            <div class="product_review">
+                                                <h3>Reviews ({{ product.reviews.count }})</h3>
+                                                {% for review in product.reviews.all %}
+                                                <div class="commant-text row">
+                                                    <div class="col-lg-2 col-md-2 col-sm-4">
+                                                        <div class="profile">
+                                                            <img class="img-responsive" src="{{ review.user.profile_image.url }}" alt="#">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-10 col-md-10 col-sm-8">
+                                                        <h5>{{ review.user.username }}</h5>
+                                                        <p><span class="c_date">{{ review.date }}</span> | <span><a rel="nofollow" class="comment-reply-link" href="#">Reply</a></span></p>
+                                                        <span class="rating">
+                                                            {% for i in range %}
+                                                                <i class="fa {% if i <= review.rating %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                                                            {% endfor %}
+                                                        </span>
+                                                        <p class="msg">{{ review.comment }}</p>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="full review_bt_section">
+                                                            <div class="float-right">
+                                                                <a class="btn sqaure_bt" data-toggle="collapse" href="#collapseReviewForm" role="button" aria-expanded="false" aria-controls="collapseReviewForm">Leave a Review</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="full">
+                                                            <div id="collapseReviewForm" class="full collapse commant_box">
+                                                                <form accept-charset="UTF-8" action="{% url 'add_review' product.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." required=""></textarea>
+                                                                    <div class="full_bt center">
+                                                                        <button class="btn sqaure_bt" type="submit">Save</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Related Products Section -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="full">
+                                <div class="main_heading text_align_left" style="margin-bottom: 35px;">
+                                    <h3>Related products</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for related_product in related_products %}
+                        <div class="col-md-4 col-sm-6 col-xs-12 margin_bottom_30_all">
+                            <div class="product_list">
+                                <div class="product_img">
+                                    <img class="img-responsive" src="{{ related_product.image.url }}" alt="{{ related_product.name }}">
+                                </div>
+                                <div class="product_detail_btm">
+                                    <div class="center">
+                                        <h4><a href="{% url 'product_detail' related_product.id %}">{{ related_product.name }}</a></h4>
+                                    </div>
+                                    <div class="starratin">
+                                        <div class="center">
+                                            {% for i in range %}
+                                                <i class="fa {% if i <= related_product.rating %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="product_price">
+                                        <p><span class="old_price">${{ related_product.old_price }}</span> – <span class="new_price">${{ related_product.new_price }}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="side_bar">
+                        <div class="side_bar_blog">
+                            <h4>SEARCH</h4>
+                            <div class="side_bar_search">
+                                <div class="input-group stylish-input-group">
+                                    <input class="form-control" placeholder="Search" type="text">
+                                    <span class="input-group-addon">
+                                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side_bar_blog">
+                            <h4>CATEGORIES</h4>
+                            <div class="categary">
+                                <ul>
+                                    {% for category in categories %}
+                                    <li><a href="{% url 'product_by_category' category.id %}"><i class="fa fa-angle-right"></i>{{ category.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="side_bar_blog">
+                            <h4>RECENT PRODUCTS</h4>
+                            <div class="recent_post">
+                                <ul>
+                                    {% for recent_product in recent_products %}
+                                    <li>
+                                        <p class="post_head"><a href="{% url 'product_detail' recent_product.id %}">{{ recent_product.name }}</a></p>
+                                        <p class="post_date"><i class="fa fa-clock-o"></i> {{ recent_product.date_added }}</p>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="side_bar_blog">
+                            <h4>Random Products</h4>
+                            <div class="recent_post">
+                                <ul>
+                                    {% for random_product in random_products %}
+                                    <li>
+                                        <p class="post_head"><a href="{% url 'product_detail' random_product.id %}">{{ random_product.name }}</a></p>
+                                        <p class="post_date"><i class="fa fa-clock-o"></i> {{ random_product.date_added }}</p>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="side_bar_blog">
+                            <h4>TAG</h4>
+                            <div class="tags">
+                                {% for tag in tags %}
+                                <a href="{% url 'product_by_tag' tag.id %}">{{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "footer/footer.html" %}
+    
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>

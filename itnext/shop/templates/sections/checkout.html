@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+</head>
+<body>
+    {% include "header/header.html" %}
+    <div id="inner_banner" class="section inner_banner_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="full">
+                        <div class="title-holder">
+                            <div class="title-holder-cell text-left">
+                                <h1 class="page-title">Checkout</h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li class="active">Checkout</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section padding_layout_1 checkout_section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="checkout-form">
+                            <form id="checkout-form" method="post" action="{% url 'checkout' %}">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <label>First name <span class="red">*</span></label>
+                                                <input name="fn" type="text" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <label>Last name <span class="red">*</span></label>
+                                                <input name="ln" type="text" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-field">
+                                            <label>Country</label>
+                                            <select name="cn" required>
+                                                <option value="AF">Afghanistan</option>
+                                                <option value="AX">Åland Islands</option>
+                                                <option value="AL">Albania</option>
+                                                <option value="DZ">Algeria</option>
+                                                <option value="AS">American Samoa</option>
+                                                <!-- Add all other country options here -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-field">
+                                            <label>Address <span class="red">*</span></label>
+                                            <textarea name="ad" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-field">
+                                            <label>Town / City <span class="red">*</span></label>
+                                            <input name="tc" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-field">
+                                            <label>State / County <span class="red">*</span></label>
+                                            <input name="sc" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-field">
+                                            <label>Postcode / ZIP <span class="red">*</span></label>
+                                            <input name="pz" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-field">
+                                            <label>Phone <span class="red">*</span></label>
+                                            <input name="ph" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-field">
+                                            <label>Email address <span class="red">*</span></label>
+                                            <input name="em" type="email" required>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="row">
+                                    <div class="col-md-12 payment-bt">
+                                        <div class="center">
+                                            <button type="submit" class="bt_main">Place Order</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if error %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="shopping-cart-cart">
+                            <table class="table">
+                                <tbody>
+                                    <tr class="head-table">
+                                        <td><h5>Cart Totals</h5></td>
+                                        <td class="text-right"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h4>Subtotal</h4></td>
+                                        <td class="text-right"><h4>${{ subtotal }}</h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h5>Estimated shipping</h5></td>
+                                        <td class="text-right"><h4>${{ shipping }}</h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h3>Total</h3></td>
+                                        <td class="text-right"><h4>${{ total }}</h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "footer/footer.html" %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>

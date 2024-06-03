@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Products</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .product_list {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product_img img {
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+        }
+        .product_detail_btm {
+            margin-top: 16px;
+        }
+        .starratin .fa {
+            color: #f1c40f;
+        }
+        .product_price .old_price {
+            text-decoration: line-through;
+            color: #999;
+        }
+        .product_price .new_price {
+            font-weight: bold;
+            color: #333;
+        }
+        .see_all_products {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .see_all_products a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .see_all_products a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="section padding_layout_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="full">
+                        <div class="main_heading text_align_center">
+                            <h2>Our Products</h2>
+                            <p class="large">We package the products with best services to make you a happy customer.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if not products %}
+                    <p>No products available.</p>
+                {% endif %}
+                {% for product in products %}
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">
+                        <div class="product_list">
+                            <div class="product_img">
+                                <img class="img-responsive" src="{{ product.image.url }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product_detail_btm">
+                                <div class="center">
+                                    <h4><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h4>
+                                </div>
+                                <div class="starratin">
+                                    <div class="center">
+                                        {% for i in range %}
+                                            <i class="fa {% if i <= product.rating %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="product_price">
+                                    <p><span class="old_price">${{ product.old_price }}</span> – <span class="new_price">${{ product.new_price }}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter == 6 %}
+                        <div class="col-md-12 see_all_products">
+                            <a href="{% url 'all_products' %}">See All Products</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    {% endif %}
+                {% endfor %}
+                {% if products|length > 6 %}
+                    <div class="col-md-12 see_all_products">
+                        <a href="{% url 'all_products' %}">See All Products</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
